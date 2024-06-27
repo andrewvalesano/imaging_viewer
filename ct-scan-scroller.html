@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CT Scan Viewer</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000; /* Set background color to black */
+        }
+        .viewer {
+            position: relative;
+            width: 500px; /* Adjust width as needed */
+            height: 500px; /* Adjust height as needed */
+            overflow: hidden;
+            border: none; /* Remove border */
+            border-radius: 10px; /* Rounded edges for the viewer container */
+            background-color: #000; /* Set background color to black */
+        }
+        .container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .container img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            border: none; /* Remove border from images */
+            margin: 0; /* Remove margin */
+            padding: 0; /* Remove padding */
+        }
+        .container img.active {
+            display: block;
+        }
+        .scrollbar {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            overflow-y: auto;
+            width: 20px; /* Adjust scrollbar width as needed */
+            border-radius: 10px; /* Rounded edges for the scrollbar */
+        }
+        .scrollbar::-webkit-scrollbar {
+            width: 12px;
+        }
+        .scrollbar::-webkit-scrollbar-track {
+            background: #333; /* Dark background for the scrollbar track */
+            border-radius: 10px;
+        }
+        .scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        .scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .scrollbar div {
+            height: 5000px; /* Ensure enough height to enable scrolling */
+        }
+    </style>
+</head>
+<body>
+    <div class="viewer">
+        <div class="container">
+            <!-- Image placeholders -->
+        </div>
+        <div class="scrollbar">
+            <div></div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.querySelector('.container');
+        const scrollbar = document.querySelector('.scrollbar');
+
+        // Number of images
+        const numImages = 67;
+
+        // Path to images (adjust the path as necessary)
+        const imagePath = './';
+
+        // Load images dynamically
+        for (let i = 1; i <= numImages; i++) {
+            const img = document.createElement('img');
+            img.src = `${imagePath}${i}.jpg`;
+            img.alt = `Image ${i}`;
+            container.appendChild(img);
+        }
+
+        const images = document.querySelectorAll('.container img');
+        images[0].classList.add('active');
+
+        scrollbar.addEventListener('scroll', () => {
+            const scrollFraction = scrollbar.scrollTop / (scrollbar.scrollHeight - scrollbar.clientHeight);
+            const imageIndex = Math.min(
+                numImages - 1,
+                Math.floor(scrollFraction * numImages)
+            );
+            images.forEach((img, index) => {
+                img.classList.toggle('active', index === imageIndex);
+            });
+        });
+    </script>
+</body>
+</html>
