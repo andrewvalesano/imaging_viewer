@@ -21,6 +21,7 @@
             border: none; /* Remove border */
             border-radius: 10px; /* Rounded edges for the viewer container */
             background-color: #000; /* Set background color to black */
+            cursor: grab;
         }
         .container {
             position: absolute;
@@ -39,32 +40,6 @@
         .container img.active {
             display: block;
         }
-        .scrollbar {
-            position: absolute;
-            right: 10px; /* Add space from the right edge */
-            top: 0;
-            height: 100%;
-            overflow-y: auto;
-            width: 20px; /* Adjust scrollbar width as needed */
-            border-radius: 10px; /* Rounded edges for the scrollbar */
-        }
-        .scrollbar::-webkit-scrollbar {
-            width: 12px;
-        }
-        .scrollbar::-webkit-scrollbar-track {
-            background: #333; /* Dark background for the scrollbar track */
-            border-radius: 10px;
-        }
-        .scrollbar::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 10px;
-        }
-        .scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-        .scrollbar div {
-            height: 5000px; /* Ensure enough height to enable scrolling */
-        }
     </style>
 </head>
 <body>
@@ -72,14 +47,11 @@
         <div class="container">
             <!-- Image placeholders -->
         </div>
-        <div class="scrollbar">
-            <div></div>
-        </div>
     </div>
 
     <script>
         const container = document.querySelector('.container');
-        const scrollbar = document.querySelector('.scrollbar');
+        const viewer = document.querySelector('.viewer');
 
         // Number of images
         const numImages = 67;
@@ -98,16 +70,48 @@
         const images = document.querySelectorAll('.container img');
         images[0].classList.add('active');
 
-        scrollbar.addEventListener('scroll', () => {
-            const scrollFraction = scrollbar.scrollTop / (scrollbar.scrollHeight - scrollbar.clientHeight);
-            const imageIndex = Math.min(
-                numImages - 1,
-                Math.floor(scrollFraction * numImages)
-            );
-            images.forEach((img, index) => {
-                img.classList.toggle('active', index === imageIndex);
-            });
-        });
+        let isDragging = false;
+        let startY;
+        let imageIndex = 0;
+
+        const onDragStart = (event) => {
+            isDragging = true;
+            startY = event.touches ? event.touches[0].pageY : event.pageY;
+            viewer.style.cursor = 'grabbing';
+        };
+
+        const onDragEnd = () => {
+            isDragging = false;
+            viewer.style.cursor = 'grab';
+        };
+
+        const onDragMove = (event) => {
+            if (!isDragging) return;
+            const currentY = event.touches ? event.touches[0].pageY : event.pageY;
+            const deltaY = startY - currentY;
+
+            // Adjust the sensitivity of the drag movement
+            const sensitivity = 200;
+            const deltaIndex = Math.floor(deltaY / sensitivity);
+
+            // Calculate the new image index
+            const newImageIndex = Math.min(numImages - 1, Math.max(0, imageIndex + deltaIndex));
+
+            if (newImageIndex !== imageIndex) {
+                images[imageIndex].classList.remove('active');
+                images[newImageIndex].classList.add('active');
+                imageIndex = newImageIndex;
+            }
+        };
+
+        viewer.addEventListener('mousedown', onDragStart);
+        viewer.addEventListener('touchstart', onDragStart);
+        window.addEventListener('mouseup', onDragEnd);
+        window.addEventListener('touchend', onDragEnd);
+        window.addEventListener('mousemove', onDragMove);
+        window.addEventListener('touchmove', onDragMove);
+
+        viewer.style.cursor = 'grab';
     </script>
 </body>
 </html>
