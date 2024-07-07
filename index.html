@@ -8,24 +8,23 @@
         body, html {
             height: 100%;
             margin: 0;
-            padding: 5mm; /* Small margin for touchability */
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: #000; /* Set background color to black */
+            padding: 5%;
             box-sizing: border-box; /* Include padding in height/width calculations */
         }
         .viewer {
             position: relative;
-            width: 90%; /* Relative width for responsiveness */
+            width: 90%; /* 5% smaller for better mobile fit */
             max-width: 500px; /* Maximum width */
-            height: 90%; /* Relative height for responsiveness */
+            height: 90%; /* 5% smaller for better mobile fit */
             max-height: 500px; /* Maximum height */
             overflow: hidden;
             border: none; /* Remove border */
             border-radius: 10px; /* Rounded edges for the viewer container */
             background-color: #000; /* Set background color to black */
-            box-sizing: border-box; /* Include padding in height/width calculations */
         }
         .container {
             position: absolute;
