@@ -9,6 +9,7 @@
             height: 100%;
             margin: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background-color: #000; /* Set background color to black */
@@ -65,6 +66,23 @@
         .scrollbar div {
             height: 5000px; /* Ensure enough height to enable scrolling */
         }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            width: 500px; /* Match the width of the viewer */
+        }
+        .control-button {
+            background-color: #444;
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .control-button:hover {
+            background-color: #666;
+        }
     </style>
 </head>
 <body>
@@ -76,10 +94,16 @@
             <div></div>
         </div>
     </div>
+    <div class="controls">
+        <button class="control-button" id="back-button">&larr; Back</button>
+        <button class="control-button" id="forward-button">Forward &rarr;</button>
+    </div>
 
     <script>
         const container = document.querySelector('.container');
         const scrollbar = document.querySelector('.scrollbar');
+        const backButton = document.getElementById('back-button');
+        const forwardButton = document.getElementById('forward-button');
 
         // Number of images
         const numImages = 67;
@@ -96,18 +120,54 @@
         }
 
         const images = document.querySelectorAll('.container img');
-        images[0].classList.add('active');
+        let currentIndex = 0;
+        images[currentIndex].classList.add('active');
 
+        // Function to update the displayed image
+        const updateImage = (index) => {
+            images.forEach((img, i) => {
+                img.classList.toggle('active', i === index);
+            });
+        };
+
+        // Scrollbar scroll event
         scrollbar.addEventListener('scroll', () => {
             const scrollFraction = scrollbar.scrollTop / (scrollbar.scrollHeight - scrollbar.clientHeight);
-            const imageIndex = Math.min(
+            currentIndex = Math.min(
                 numImages - 1,
                 Math.floor(scrollFraction * numImages)
             );
-            images.forEach((img, index) => {
-                img.classList.toggle('active', index === imageIndex);
-            });
+            updateImage(currentIndex);
         });
+
+        // Button press and hold functionality
+        let backInterval, forwardInterval;
+
+        backButton.addEventListener('mousedown', () => {
+            backInterval = setInterval(() => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateImage(currentIndex);
+                    scrollbar.scrollTop = (currentIndex / numImages) * (scrollbar.scrollHeight - scrollbar.clientHeight);
+                }
+            }, 100);
+        });
+
+        backButton.addEventListener('mouseup', () => clearInterval(backInterval));
+        backButton.addEventListener('mouseleave', () => clearInterval(backInterval));
+
+        forwardButton.addEventListener('mousedown', () => {
+            forwardInterval = setInterval(() => {
+                if (currentIndex < numImages - 1) {
+                    currentIndex++;
+                    updateImage(currentIndex);
+                    scrollbar.scrollTop = (currentIndex / numImages) * (scrollbar.scrollHeight - scrollbar.clientHeight);
+                }
+            }, 100);
+        });
+
+        forwardButton.addEventListener('mouseup', () => clearInterval(forwardInterval));
+        forwardButton.addEventListener('mouseleave', () => clearInterval(forwardInterval));
     </script>
 </body>
 </html>
