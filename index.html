@@ -9,18 +9,17 @@
             height: 100%;
             margin: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background-color: #000; /* Set background color to black */
-            padding: 5%;
-            box-sizing: border-box; /* Include padding in height/width calculations */
         }
         .viewer {
             position: relative;
-            width: 90%; /* 5% smaller for better mobile fit */
-            max-width: 500px; /* Maximum width */
-            height: 90%; /* 5% smaller for better mobile fit */
-            max-height: 500px; /* Maximum height */
+            width: 90%; /* 90% of viewport width for better fit on mobile */
+            max-width: 450px; /* Maximum width */
+            height: 90%; /* 90% of viewport height for better fit on mobile */
+            max-height: 450px; /* Maximum height */
             overflow: hidden;
             border: none; /* Remove border */
             border-radius: 10px; /* Rounded edges for the viewer container */
@@ -75,7 +74,7 @@
             display: flex;
             justify-content: space-between;
             width: 90%; /* Match the width of the viewer */
-            max-width: 500px; /* Maximum width */
+            max-width: 450px; /* Maximum width */
         }
         .control-button {
             background-color: #444;
