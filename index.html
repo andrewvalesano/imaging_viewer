@@ -143,31 +143,45 @@
         // Button press and hold functionality
         let backInterval, forwardInterval;
 
+        const scrollBack = () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateImage(currentIndex);
+                scrollbar.scrollTop = (currentIndex / numImages) * (scrollbar.scrollHeight - scrollbar.clientHeight);
+            }
+        };
+
+        const scrollForward = () => {
+            if (currentIndex < numImages - 1) {
+                currentIndex++;
+                updateImage(currentIndex);
+                scrollbar.scrollTop = (currentIndex / numImages) * (scrollbar.scrollHeight - scrollbar.clientHeight);
+            }
+        };
+
         backButton.addEventListener('mousedown', () => {
-            backInterval = setInterval(() => {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateImage(currentIndex);
-                    scrollbar.scrollTop = (currentIndex / numImages) * (scrollbar.scrollHeight - scrollbar.clientHeight);
-                }
-            }, 100);
+            backInterval = setInterval(scrollBack, 50); // Twice as fast
+        });
+        forwardButton.addEventListener('mousedown', () => {
+            forwardInterval = setInterval(scrollForward, 50); // Twice as fast
         });
 
         backButton.addEventListener('mouseup', () => clearInterval(backInterval));
         backButton.addEventListener('mouseleave', () => clearInterval(backInterval));
-
-        forwardButton.addEventListener('mousedown', () => {
-            forwardInterval = setInterval(() => {
-                if (currentIndex < numImages - 1) {
-                    currentIndex++;
-                    updateImage(currentIndex);
-                    scrollbar.scrollTop = (currentIndex / numImages) * (scrollbar.scrollHeight - scrollbar.clientHeight);
-                }
-            }, 100);
-        });
-
         forwardButton.addEventListener('mouseup', () => clearInterval(forwardInterval));
         forwardButton.addEventListener('mouseleave', () => clearInterval(forwardInterval));
+
+        // Touch event listeners for mobile devices
+        backButton.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent default touch behavior
+            backInterval = setInterval(scrollBack, 50); // Twice as fast
+        });
+        backButton.addEventListener('touchend', () => clearInterval(backInterval));
+        forwardButton.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent default touch behavior
+            forwardInterval = setInterval(scrollForward, 50); // Twice as fast
+        });
+        forwardButton.addEventListener('touchend', () => clearInterval(forwardInterval));
     </script>
 </body>
 </html>
