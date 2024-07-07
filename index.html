@@ -8,25 +8,24 @@
         body, html {
             height: 100%;
             margin: 0;
+            padding: 5mm; /* Small margin for touchability */
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             background-color: #000; /* Set background color to black */
-            padding: 10px; /* Add padding to ensure margin around the edges */
-            box-sizing: border-box; /* Ensure padding is included in the height and width calculations */
+            box-sizing: border-box; /* Include padding in height/width calculations */
         }
         .viewer {
             position: relative;
-            width: 100%; /* Full width with padding taken into account */
+            width: 90%; /* Relative width for responsiveness */
             max-width: 500px; /* Maximum width */
-            height: 100%; /* Full height with padding taken into account */
+            height: 90%; /* Relative height for responsiveness */
             max-height: 500px; /* Maximum height */
             overflow: hidden;
             border: none; /* Remove border */
             border-radius: 10px; /* Rounded edges for the viewer container */
             background-color: #000; /* Set background color to black */
-            box-sizing: border-box; /* Ensure padding is included in the height and width calculations */
+            box-sizing: border-box; /* Include padding in height/width calculations */
         }
         .container {
             position: absolute;
@@ -37,6 +36,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
+            object-fit: contain; /* Maintain original proportions */
             display: none;
             border: none; /* Remove border from images */
             margin: 0; /* Remove margin */
@@ -75,8 +75,8 @@
             margin-top: 10px;
             display: flex;
             justify-content: space-between;
-            width: 100%;
-            max-width: 500px; /* Match the width of the viewer */
+            width: 90%; /* Match the width of the viewer */
+            max-width: 500px; /* Maximum width */
         }
         .control-button {
             background-color: #444;
