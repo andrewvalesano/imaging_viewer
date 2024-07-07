@@ -16,10 +16,8 @@
         }
         .viewer {
             position: relative;
-            width: 90%; /* 90% of viewport width for better fit on mobile */
-            max-width: 450px; /* Maximum width */
-            height: 90%; /* 90% of viewport height for better fit on mobile */
-            max-height: 450px; /* Maximum height */
+            width: 500px; /* Adjust width as needed */
+            height: 500px; /* Adjust height as needed */
             overflow: hidden;
             border: none; /* Remove border */
             border-radius: 10px; /* Rounded edges for the viewer container */
@@ -34,7 +32,6 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Maintain original proportions */
             display: none;
             border: none; /* Remove border from images */
             margin: 0; /* Remove margin */
@@ -73,8 +70,7 @@
             margin-top: 10px;
             display: flex;
             justify-content: space-between;
-            width: 90%; /* Match the width of the viewer */
-            max-width: 450px; /* Maximum width */
+            width: 500px; /* Match the width of the viewer */
         }
         .control-button {
             background-color: #444;
